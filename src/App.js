@@ -24,38 +24,61 @@ class App extends Component {
     otherState: 'some other value'
   }
 
-  switchNameHandler = () => {
+  switchNameHandler = (newName) => {
     console.log('Clicked!');
     // DON'T DO THIS: this.state.prsons[0].name = 'RahulReddy'; 
-    /*  1- component object has a setState method whoich allows us to update state property and ensures that react knows about it and updates DOM.
+    /*  1- component object has a setState method which allows us to update state property and ensures that react knows about it and updates DOM.
         2- setState will override/merge the old state (persons - above) with the new one(persons-below), it doesn't touch the other state (otherState) because nothing is said in setState method about it
-    */
+    */ 
     this.setState({
       persons : [
-        { name: "RahulReddy", age: 26 },
+        { name: newName, age: 26 },
         { name: "C'ni", age: 28 },
         { name: "Hari", age: 35 }
       ]
     })
   }
 
+  changedNameHandler = (event) => {
+    this.setState({
+      persons : [
+        { name: "Rahul", age: 26 },
+        { name: "C'ni", age: 28 },
+        { name: event.target.value, age: 35 }
+      ]
+    })
+  }
+
   render() {
+    const btnStyle = {
+      backgroundColor: 'white',
+      font: 'inherit',
+      border: '1px solid #6868c5',
+      padding: '8px',
+      cursor: 'pointer',
+      boxShadow: '0px 2px 3px #8e8dd2'
+    }
     return (
       <div className="App">
         <h1> Hi, I am component-1 </h1>
         <p> This is really working! </p>
-        <button onClick={this.switchNameHandler}> Switch Name </button>
+        <button 
+          style={btnStyle}
+          onClick={this.switchNameHandler.bind(this, 'Rahul!!!')}> Switch Name
+        </button>
         <PersonComponent 
         name={this.state.persons[0].name} 
         age={this.state.persons[0].age} /> 
         <PersonComponent
           name={this.state.persons[1].name} 
           age={this.state.persons[1].age}
-          eventBetweenComponents={this.switchNameHandler}> My hobbies : Researching
+          eventBetweenComponents={this.switchNameHandler.bind(this,'Rahul!')}>
+           My hobbies : Researching
         </PersonComponent>
         <PersonComponent 
           name={this.state.persons[2].name} 
-          age={this.state.persons[2].age}> 
+          age={this.state.persons[2].age}
+          changed={this.changedNameHandler}> 
         </PersonComponent>
       </div>
     );
