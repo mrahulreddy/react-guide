@@ -7,7 +7,9 @@ Author: M. Rahul Reddy ([RahulReddy](https://github.com/mrahulreddy))
 
 1. Install via either [npm](https://www.npmjs.com/) or downloaded files:
     1. Go to the project folder path in terminal/cmd and then use the below command to install the project dependencies
-        `bower install angular-env-logger`
+        `npm install`
+2. Run the project using the below command:
+    1. `npm start`
 <!--    2. download [angular-env-logger.zip](https://github.com/mrahulreddy/angular-env-logger/zipball/master)
 2. Include dependencies in your HTML.
     1. When using bower:
