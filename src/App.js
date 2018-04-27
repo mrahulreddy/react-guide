@@ -21,7 +21,8 @@ class App extends Component {
       { name: "C'ni", age: 28 },
       { name: "Hari", age: 32 }
     ],
-    otherState: 'some other value'
+    otherState: 'some other value',
+    showPersons: false
   }
 
   switchNameHandler = (newName) => {
@@ -39,6 +40,7 @@ class App extends Component {
     })
   }
 
+  //Arrow function syntax is used for changedNameHandler because we will use this keyword, though this keywprd works in render method, we don't use the render method syntax because this keyword for event handlers doesn't work for render method syntax. It works as expected only with arrow function syntax.
   changedNameHandler = (event) => {
     this.setState({
       persons : [
@@ -46,6 +48,13 @@ class App extends Component {
         { name: "C'ni", age: 28 },
         { name: event.target.value, age: 35 }
       ]
+    })
+  }
+// show and hide the persons components
+  togglePersonsHandler = () => {
+    const loadPersons = this.state.showPersons;
+    this.setState({
+      showPersons : !loadPersons
     })
   }
 
@@ -58,28 +67,41 @@ class App extends Component {
       cursor: 'pointer',
       boxShadow: '0px 2px 3px #8e8dd2'
     }
+    {/* 1- The code in return block is JSX code and it looks like html but it is JS in real, so we may also use teriniary operator in retun block instead the below i.e outside the return block, but this is the optimal way of doing it.
+        2- Whatsoever to render content to DOM, the entire render block gets executed and not just the return statement.
+        3- The entire JSX code is just a syntactical sugar of React createElement.
+     */}
+
+     let persons = null;
+     if (this.state.showPersons) {
+      persons = 
+      <div> 
+      <PersonComponent 
+        name={this.state.persons[0].name} 
+        age={this.state.persons[0].age} /> 
+      <PersonComponent
+          name={this.state.persons[1].name} 
+          age={this.state.persons[1].age}
+          eventBetweenComponents={this.switchNameHandler.bind(this,'Rahul!')}>
+          My hobbies : Researching
+      </PersonComponent>
+      <PersonComponent 
+          name={this.state.persons[2].name} 
+          age={this.state.persons[2].age}
+          changed={this.changedNameHandler}> 
+      </PersonComponent>
+    </div>
+     }
+
     return (
       <div className="App">
         <h1> Hi, I am component-1 </h1>
         <p> This is really working! </p>
         <button 
           style={btnStyle}
-          onClick={this.switchNameHandler.bind(this, 'Rahul!!!')}> Switch Name
+          onClick={this.togglePersonsHandler}> Toggle Persons
         </button>
-        <PersonComponent 
-        name={this.state.persons[0].name} 
-        age={this.state.persons[0].age} /> 
-        <PersonComponent
-          name={this.state.persons[1].name} 
-          age={this.state.persons[1].age}
-          eventBetweenComponents={this.switchNameHandler.bind(this,'Rahul!')}>
-           My hobbies : Researching
-        </PersonComponent>
-        <PersonComponent 
-          name={this.state.persons[2].name} 
-          age={this.state.persons[2].age}
-          changed={this.changedNameHandler}> 
-        </PersonComponent>
+          {persons}
       </div>
     );
 
